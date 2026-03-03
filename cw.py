@@ -17,6 +17,7 @@ morse = make_morse(TEST_STRING)
 
 LINE = 91
 
+# REPLACE this part with the actual function and check it works...
 with request_lines(
     "/dev/gpiochip1",
     consumer="blink-example",
@@ -26,7 +27,6 @@ with request_lines(
             )
         },
     ) as request:
-        print(morse)
         for i in morse:
             if i == '.':
                 request.set_value(LINE, Value.ACTIVE)
