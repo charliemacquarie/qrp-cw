@@ -15,8 +15,10 @@ TEST_STRING = 'KN6HLC sending 73s!'
 
 morse = make_morse(TEST_STRING)
 
-LINE = 91
+LINE = 92
 
-blink_morse(91, morse)
+blink_morse(LINE, morse)
 
-blink_idle(91)
+cycle = time.time() + 30
+while time.time() < cycle:
+    blink_idle(LINE)
