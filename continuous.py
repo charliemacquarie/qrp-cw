@@ -1,3 +1,5 @@
+import time
+
 from gpiod import request_lines, LineSettings
 from gpiod.line import Direction, Value
 
