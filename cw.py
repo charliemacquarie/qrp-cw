@@ -3,7 +3,7 @@ import time
 from gpiod import request_lines, LineSettings
 from gpiod.line import Direction, Value
 
-from continuous import make_morse
+from continuous import make_morse, blink_morse
 
 # MORSE TIMINGS
 dot = 0.5
@@ -17,6 +17,8 @@ morse = make_morse(TEST_STRING)
 
 LINE = 91
 
+blink_morse(91, morse)
+"""
 # REPLACE this part with the actual function and check it works...
 with request_lines(
     "/dev/gpiochip1",
@@ -40,3 +42,5 @@ with request_lines(
 
             request.set_value(LINE, Value.INACTIVE)
             time.sleep(dot)
+
+"""
