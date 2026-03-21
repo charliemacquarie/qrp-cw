@@ -44,7 +44,7 @@ def make_morse(string: str):
         morse_string += m
         morse_string += ' '
 
-    return morse_string
+    return morse_string.strip()
 
 def blink_morse(chip_line: int, morse_string: str):
     """
@@ -99,8 +99,8 @@ def blink_idle(chip_line: int):
 
     # TIMINGS
     # MAKE THESE EDITABLE?
-    dot = 0.5
-    dash = (dot * 3)
+    # dot = 0.5
+    # dash = (dot * 3)
 
     # ENABLE SPECIFY THE gpiochip?
     with request_lines(
