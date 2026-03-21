@@ -89,20 +89,24 @@ def blink_morse(chip_line: int, morse_string: str):
                 request.set_value(chip_line, Value.INACTIVE)
                 time.sleep(dot)
 
-def blink_idle(chip_line: int):
+def blink_idle(chip_line: int, cycle_time: int):
     """
     Use a specified gpio pin to send signals which will blink an LED
-    (if one is connected to the pin) on and off at an on:off ratio of 1:3
+    (if one is connected to the pin) on and off at an on:off ratio of 1:3 for
+    a specified cycle_time in secs
 
     :param chip_line int: the line number on the gpiochip which should send signal
+    :param cycle_time int: number of secs to blink the idle pattern
     """
 
     # TIMINGS
     # MAKE THESE EDITABLE?
-    # dot = 0.5
-    # dash = (dot * 3)
+    dot = 0.5
+    dash = (dot * 3)
 
     # ENABLE SPECIFY THE gpiochip?
+    cycle = time.time() + cycle_time
+
     with request_lines(
         "/dev/gpiochip1",
         consumer="blink-idle",
@@ -112,7 +116,7 @@ def blink_idle(chip_line: int):
                 )
             },
         ) as request:
-            while True:
+            while time.time() < cycle:
                 request.set_value(chip_line, Value.ACTIVE)
                 time.sleep(dot)
                 request.set_value(chip_line, Value.INACTIVE)
