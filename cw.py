@@ -25,7 +25,7 @@ space = (dot * 7)
 LINE = 92
 cycle = 30
 
-LINES = [91, 92, 94]
+LINES = [91, 92, 93]
 
 # NOW come back in and make a loop that actually looks in the dirs and
 # goes to idle if nothing.
