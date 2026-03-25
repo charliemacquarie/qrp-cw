@@ -55,7 +55,7 @@ def run_cw(directory: str, chip_line: int, cycle_time: int):
     while True:
         files = [join(directory, f) for f in listdir(directory) if isfile(join(directory, f))]
         if files:
-            print('transmitting files')
+            #print('transmitting files')
             for f in files:
                 with open(f, 'r') as file:
                     morse = make_morse(file.read())
@@ -65,10 +65,12 @@ def run_cw(directory: str, chip_line: int, cycle_time: int):
 
                 remove(f)
 
-        print('blinking idle')
+        #print('blinking idle')
         blink_idle(chip_line, cycle_time)
 
 #run_cw(stream_0, LINE, cycle)
 
 if __name__  == '__main__':
     Process(target=run_cw, args=(STREAMS[0], LINES[0], 30)).start()
+    Process(target=run_cw, args=(STREAMS[1], LINES[1], 30)).start()
+    Process(target=run_cw, args=(STREAMS[2], LINES[2], 30)).start()
