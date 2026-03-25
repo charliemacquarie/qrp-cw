@@ -64,3 +64,5 @@ def run_cw(directory: str, chip_line: int, cycle_time: int):
 
         print('blinking idle')
         blink_idle(chip_line, cycle_time)
+
+run_cw(stream_0, LINE, cycle)
