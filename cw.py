@@ -50,7 +50,7 @@ def run_cw(directory: str, chip_line: int, cycle_time: int):
     """
 
     while True:
-        files = [f for f in listdir(directory) if isfile(join(directory, f))]
+        files = [join(directory, f) for f in listdir(directory) if isfile(join(directory, f))]
         if files:
             print('transmitting files')
             for f in files:
