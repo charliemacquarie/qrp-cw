@@ -2,6 +2,7 @@ import time
 from pathlib import Path
 from os import listdir, remove
 from os.path import isfile, join
+from multiprocessing import Process
 
 from gpiod import request_lines, LineSettings
 from gpiod.line import Direction, Value
@@ -14,15 +15,17 @@ dash = (dot * 3)
 pause = dash
 space = (dot * 7)
 
-TEST_STRING = 'KN6HLC sending 73s!'
+#TEST_STRING = 'KN6HLC sending 73s!'
 
-morse = make_morse(TEST_STRING)
+#morse = make_morse(TEST_STRING)
 
 # gpio lines right now should be:
 # 91, 92, 94
 
 LINE = 92
 cycle = 30
+
+LINES = [91, 92, 94]
 
 # NOW come back in and make a loop that actually looks in the dirs and
 # goes to idle if nothing.
@@ -36,7 +39,7 @@ stream_0 = base_dir + '/transmit-data/stream-0'
 stream_1 = base_dir + '/transmit-data/stream-1'
 stream_2 = base_dir + '/transmit-data/stream-2'
 
-
+STREAMS = [stream_0, stream_1, stream_2]
 # HAVE TO TEST THIS
 # This should now be able to run with dir, line, and cycle specified
 # and then can see about multi-threading...
@@ -65,4 +68,7 @@ def run_cw(directory: str, chip_line: int, cycle_time: int):
         print('blinking idle')
         blink_idle(chip_line, cycle_time)
 
-run_cw(stream_0, LINE, cycle)
+#run_cw(stream_0, LINE, cycle)
+
+if __name__  == '__main__':
+    Process(target=run_cw, args=(STREAMS[0], LINES[0], 30)).start()
