@@ -1,4 +1,7 @@
 import time
+from pathlib import Path
+from os import listdir, remove
+from os.path import isfile, join
 
 from gpiod import request_lines, LineSettings
 from gpiod.line import Direction, Value
@@ -19,11 +22,45 @@ morse = make_morse(TEST_STRING)
 # 91, 92, 94
 
 LINE = 92
-cycle = 10
-
+cycle = 30
 
 # NOW come back in and make a loop that actually looks in the dirs and
 # goes to idle if nothing.
-blink_morse(LINE, morse)
+#blink_morse(LINE, morse)
 
-blink_idle(LINE, cycle)
+#blink_idle(LINE, cycle)
+
+base_dir = str(Path.home())
+
+stream_0 = base_dir + '/transmit-data/stream-0'
+stream_1 = base_dir + '/transmit-data/stream-1'
+stream_2 = base_dir + '/transmit-data/stream-2'
+
+
+# HAVE TO TEST THIS
+# This should now be able to run with dir, line, and cycle specified
+# and then can see about multi-threading...
+def run_cw(directory: str, chip_line: int, cycle_time: int):
+    """
+    Run the CW transmit using input from a supplied directory (as .txt files)
+
+    :param directory str: the directory containing the .txt files to be transmitted
+    :param chip_line int: the line number on the gpiochip which should send signal
+    :param cycle_time int: number of secs to blink the idle pattern
+    """
+
+    while True:
+        files = [f for f in listdir(directory) if isfile(join(directory, f))]
+        if files:
+            print('transmitting files')
+            for f in files:
+                with open(f, 'r') as file:
+                    morse = make_morse(file.read())
+
+                print(f'-> {f}')
+                blink_morse(chip_line, morse)
+
+                remove(f)
+
+        print('blinking idle')
+        blink_idle(chip_line, cycle_time)
