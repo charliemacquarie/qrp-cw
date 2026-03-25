@@ -1,4 +1,5 @@
 import time
+import math
 from pathlib import Path
 from os import listdir, remove
 from os.path import isfile, join
@@ -40,9 +41,8 @@ stream_1 = base_dir + '/transmit-data/stream-1'
 stream_2 = base_dir + '/transmit-data/stream-2'
 
 STREAMS = [stream_0, stream_1, stream_2]
-# HAVE TO TEST THIS
-# This should now be able to run with dir, line, and cycle specified
-# and then can see about multi-threading...
+
+# THIS DOES NEED to have a thing that gets it back on the second
 def run_cw(directory: str, chip_line: int, cycle_time: int):
     """
     Run the CW transmit using input from a supplied directory (as .txt files)
@@ -55,20 +55,17 @@ def run_cw(directory: str, chip_line: int, cycle_time: int):
     while True:
         files = [join(directory, f) for f in listdir(directory) if isfile(join(directory, f))]
         if files:
-            #print('transmitting files')
             for f in files:
                 with open(f, 'r') as file:
                     morse = make_morse(file.read())
 
-                print(f'-> {f}')
                 blink_morse(chip_line, morse)
 
                 remove(f)
 
-        #print('blinking idle')
-        blink_idle(chip_line, cycle_time)
+                time.sleep(math.ceil(time.time()) - time.time())
 
-#run_cw(stream_0, LINE, cycle)
+        blink_idle(chip_line, cycle_time)
 
 if __name__  == '__main__':
     Process(target=run_cw, args=(STREAMS[0], LINES[0], 30)).start()
